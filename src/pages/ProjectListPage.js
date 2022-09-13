@@ -4,7 +4,7 @@ import axios from "axios";
 import ProjectCard from "./../components/ProjectCard";
 import AddProject from "../components/AddProject";
 
-const API_URL = "http://localhost:5005";
+const API_URL = process.env.REACT_APP_API_URL || "https://delightful-flip-flops-ray.cyclic.app";
 
 function ProjectListPage() {
   const [projects, setProjects] = useState([]);
