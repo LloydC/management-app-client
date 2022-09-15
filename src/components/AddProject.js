@@ -13,7 +13,7 @@ function AddProject(props) {
     const uploadData = new FormData();
     uploadData.append("imageUrl", e.target.files[0]);
 
-    return api.post(`${API_URL}/api/upload`, uploadData)
+    return axios.post(`${API_URL}/api/upload`, uploadData)
           .then(res => res.data)
           .then(response => {
             console.log("response is: ", response);
