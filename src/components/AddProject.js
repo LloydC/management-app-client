@@ -10,10 +10,11 @@ function AddProject(props) {
 
 
   const handleFileUpload = (e) => {
+    const storedToken = localStorage.getItem('authToken');
     const uploadData = new FormData();
     uploadData.append("imageUrl", e.target.files[0]);
 
-    return axios.post(`${API_URL}/api/upload`, uploadData)
+    return axios.post(`${API_URL}/api/upload`, uploadData, { headers: { Authorization: `Bearer ${storedToken}` } })
           .then(res => res.data)
           .then(response => {
             console.log("response is: ", response);
