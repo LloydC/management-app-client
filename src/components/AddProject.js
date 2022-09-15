@@ -6,12 +6,27 @@ const API_URL = process.env.REACT_APP_API_URL || "https://delightful-flip-flops-
 function AddProject(props) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
 
+
+  const handleFileUpload = (e) => {
+    const uploadData = new FormData();
+    uploadData.append("imageUrl", e.target.files[0]);
+
+    return api.post(`${API_URL}/api/upload`, uploadData)
+          .then(res => res.data)
+          .then(response => {
+            console.log("response is: ", response);
+            // response carries "fileUrl" which we can use to update the state
+            setImageUrl(response.fileUrl);
+          })
+          .catch(err => console.log("Error while uploading the file: ", err));
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const requestBody = { title, description };
+    const requestBody = { title, description, imageUrl };
     
     const storedToken = localStorage.getItem('authToken');
  
@@ -25,6 +40,7 @@ function AddProject(props) {
       // Reset the state
       setTitle("");
       setDescription("");
+      setImageUrl("");
       props.refreshProjects();
     })
       .catch((error) => console.log(error));
@@ -51,6 +67,9 @@ function AddProject(props) {
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
+
+        <label>Image:</label>
+        <input type="file" name="imageUrl" onChange={(e) => handleFileUpload(e)} />
 
         <button type="submit">Submit</button>
       </form>
